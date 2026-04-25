@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Headspace — Migraine Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #090c14;
+      --surface:      #111827;
+      --card:         #162034;
+      --card-hover:   #1c293f;
+      --border:       rgba(148,163,184,0.07);
+      --border-soft:  rgba(148,163,184,0.13);
+
+      --accent:       #a78bfa;
+      --accent-dim:   rgba(167,139,250,0.14);
+      --accent-glow:  rgba(167,139,250,0.28);
+      --teal:         #2dd4bf;
+      --teal-dim:     rgba(45,212,191,0.12);
+
+      --text:         #e2e8f0;
+      --text-dim:     #94a3b8;
+      --text-muted:   #4b5563;
+
+      --p1: #34d399; --p1b: rgba(52,211,153,0.13);
+      --p2: #86efac; --p2b: rgba(134,239,172,0.13);
+      --p3: #fbbf24; --p3b: rgba(251,191,36,0.13);
+      --p4: #f97316; --p4b: rgba(249,115,22,0.13);
+      --p5: #f87171; --p5b: rgba(248,113,113,0.13);
+
+      --font-d: 'Cormorant Garamond', Georgia, serif;
+      --font-b: 'DM Sans', system-ui, sans-serif;
+      --r: 16px; --rsm: 10px; --rf: 9999px;
+      --nav: 76px;
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    #root { height: 100%; max-width: 430px; margin: 0 auto; position: relative; overflow: hidden; }
+    .app { height: 100%; display: flex; flex-direction: column; }
+    .scroll { flex: 1; overflow-y: auto; padding-bottom: calc(var(--nav) + 20px); scrollbar-width: none; }
+    .scroll::-webkit-scrollbar { display: none; }
+
+    /* ── NAV ── */
+    .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: var(--nav); background: rgba(17,24,39,0.95); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; z-index: 100; backdrop-filter: blur(20px); }
+    .nb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text-muted); transition: color .2s; font-family: var(--font-b); }
+    .nb.on { color: var(--accent); }
+    .nb svg { width: 21px; height: 21px; }
+    .nb span { font-size: 10px; font-weight: 500; letter-spacing: .04em; }
+    .fab-wrap { flex: 1; display: flex; justify-content: center; }
+    .fab { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #7c3aed); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--accent-glow); transition: all .2s; transform: translateY(-8px); }
+    .fab:hover { transform: translateY(-11px) scale(1.05); }
+    .fab svg { width: 24px; height: 24px; color: #fff; }
+
+    /* ── SHARED ── */
+    .ph { padding: 56px 22px 16px; }
+    .greet { font-family: var(--font-d); font-size: 38px; font-weight: 300; letter-spacing: -.02em; line-height: 1.15; }
+    .greet em { font-style: italic; color: var(--accent); }
+    .date-lbl { font-size: 12px; color: var(--text-muted); margin-top: 4px; letter-spacing: .05em; text-transform: uppercase; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 20px; margin: 0 14px 11px; }
+    .ct { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 13px; }
+    .sec-head { font-family: var(--font-d); font-size: 28px; font-weight: 300; padding: 52px 22px 4px; letter-spacing: -.01em; }
+    .sec-sub { font-size: 13px; color: var(--text-dim); padding: 0 22px; margin-bottom: 18px; }
+    .sec-div { padding: 0 22px; margin: 10px 0 8px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+
+    /* ── WEATHER ── */
+    .wx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .wx-stat { background: rgba(255,255,255,0.03); border-radius: var(--rsm); padding: 11px 13px; }
+    .wx-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+    .wx-val { font-size: 22px; font-weight: 600; }
+    .wx-unit { font-size: 11px; color: var(--text-dim); }
+    .risk { display: inline-flex; align-items: center; gap: 6px; padding: 4px 13px; border-radius: var(--rf); font-size: 12px; font-weight: 600; margin-top: 13px; }
+    .r-low  { background: rgba(52,211,153,.12); color: #34d399; }
+    .r-mod  { background: rgba(251,191,36,.12);  color: #fbbf24; }
+    .r-high { background: rgba(248,113,113,.12); color: #f87171; }
+
+    /* ── TODAY SCORES ── */
+    .scores-row { display: flex; gap: 11px; }
+    .slot { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--rsm); padding: 13px; cursor: pointer; transition: border-color .2s; }
+    .slot:hover { border-color: var(--border-soft); }
+    .slot-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: 5px; }
+    .slot-val { font-family: var(--font-d); font-size: 36px; font-weight: 400; line-height: 1; }
+    .slot-emp { font-size: 12px; color: var(--text-muted); }
+
+    /* ── MINI TREND ── */
+    .mini-bars { display: flex; align-items: flex-end; gap: 5px; height: 44px; }
+    .mb { flex: 1; border-radius: 3px 3px 0 0; min-height: 3px; }
+    .mini-days { display: flex; gap: 5px; margin-top: 5px; }
+    .mini-days span { flex: 1; text-align: center; font-size: 10px; color: var(--text-muted); }
+
+    /* ── LOG FORM ── */
+    .log-wrap { padding: 56px 22px 40px; }
+    .log-hed { font-family: var(--font-d); font-size: 34px; font-weight: 300; margin-bottom: 30px; }
+    .fg { margin-bottom: 26px; }
+    .fl { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 11px; }
+
+    /* time toggle */
+    .tt { display: flex; background: var(--card); border-radius: var(--rsm); padding: 4px; border: 1px solid var(--border); }
+    .tb { flex: 1; padding: 9px; border: none; background: transparent; border-radius: 7px; font-family: var(--font-b); font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-dim); transition: all .2s; }
+    .tb.on { background: var(--accent-dim); color: var(--accent); }
+
+    /* pain picker */
+    .pp { display: flex; gap: 9px; }
+    .pbtn { flex: 1; aspect-ratio: 1; border-radius: var(--rsm); border: 2px solid transparent; background: var(--card); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; transition: all .2s; font-family: var(--font-b); }
+    .pbtn:hover { transform: translateY(-2px); }
+    .pbtn.on { transform: translateY(-3px); }
+    .pnum { font-size: 22px; font-weight: 700; line-height: 1; }
+    .plbl { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; opacity: .7; }
+
+    /* chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip { padding: 6px 13px; border-radius: var(--rf); border: 1px solid var(--border-soft); background: transparent; font-family: var(--font-b); font-size: 12px; color: var(--text-dim); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
+    .chip:hover { border-color: var(--accent); color: var(--text); }
+    .chip.on { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+    .chip.med:hover { border-color: var(--teal); }
+    .chip.med.on { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+
+    /* notes */
+    .notes { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: var(--rsm); padding: 13px; color: var(--text); font-family: var(--font-b); font-size: 14px; resize: none; outline: none; min-height: 76px; transition: border-color .2s; }
+    .notes:focus { border-color: var(--border-soft); }
+    .notes::placeholder { color: var(--text-muted); }
+
+    /* save */
+    .savebtn { width: 100%; padding: 15px; border-radius: var(--r); background: linear-gradient(135deg, var(--accent), #7c3aed); border: none; color: #fff; font-family: var(--font-b); font-size: 16px; font-weight: 600; cursor: pointer; transition: all .2s; box-shadow: 0 4px 20px var(--accent-glow); letter-spacing: .02em; }
+    .savebtn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 26px var(--accent-glow); }
+    .savebtn:disabled { opacity: .35; cursor: not-allowed; }
+
+    /* ── HISTORY ── */
+    .hi { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 18px; margin: 0 14px 9px; display: flex; align-items: flex-start; gap: 14px; }
+    .hdot { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .hinfo { flex: 1; }
+    .hdate { font-size: 14px; font-weight: 500; }
+    .hmeta { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .htags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .htag { font-size: 10px; padding: 2px 8px; background: var(--accent-dim); color: var(--accent); border-radius: var(--rf); }
+
+    /* ── INSIGHTS ── */
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; margin: 0 14px 11px; }
+    .sc { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 10px; text-align: center; }
+    .sv { font-family: var(--font-d); font-size: 34px; font-weight: 400; line-height: 1; margin-bottom: 4px; }
+    .sl { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); }
+    .bar-track { height: 7px; border-radius: 4px; background: var(--card-hover); overflow: hidden; margin: 5px 0; }
+    .bar-fill { height: 100%; border-radius: 4px; transition: width .6s ease; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--border-soft); border-radius: var(--rf); padding: 11px 22px; font-size: 13px; font-weight: 500; z-index: 200; animation: tin .3s ease, tout .3s ease 1.7s forwards; box-shadow: 0 4px 24px rgba(0,0,0,.5); white-space: nowrap; }
+    @keyframes tin  { from { opacity:0; transform:translateX(-50%) translateY(-8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+    @keyframes tout { from { opacity:1; } to { opacity:0; transform:translateX(-50%) translateY(-8px); } }
+
+    /* ── FADE ── */
+    @keyframes fi { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+    .fi { animation: fi .35s ease forwards; }
+
+    /* ── EMPTY ── */
+    .empty { text-align: center; padding: 44px 22px; color: var(--text-muted); }
+    .empty svg { width: 44px; height: 44px; margin: 0 auto 14px; opacity: .25; display: block; }
+    .empty p { font-size: 13px; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useCallback, useMemo } = React;
+
+// ────────────────────────────────────────────────────────────────────────────
+// CONSTANTS
+// ────────────────────────────────────────────────────────────────────────────
+const PAIN = [
+  { v:1, color:'#34d399', bg:'rgba(52,211,153,.13)',  label:'Clear'  },
+  { v:2, color:'#86efac', bg:'rgba(134,239,172,.13)', label:'Mild'   },
+  { v:3, color:'#fbbf24', bg:'rgba(251,191,36,.13)',  label:'Mod.'   },
+  { v:4, color:'#f97316', bg:'rgba(249,115,22,.13)',  label:'Signif.'},
+  { v:5, color:'#f87171', bg:'rgba(248,113,113,.13)', label:'Severe' },
+];
+
+const TRIGGERS = [
+  { id:'bright_lights', e:'💡', l:'Bright Lights'   },
+  { id:'screen_time',   e:'📱', l:'Screen Time'      },
+  { id:'sunlight',      e:'☀️', l:'Sunlight'          },
+  { id:'loud_sounds',   e:'🔊', l:'Loud Sounds'      },
+  { id:'driving',       e:'🚗', l:'Driving'          },
+  { id:'stress',        e:'😤', l:'Stress'           },
+  { id:'poor_sleep',    e:'😴', l:'Poor Sleep'       },
+  { id:'oversleep',     e:'🛌', l:'Oversleeping'     },
+  { id:'weather',       e:'🌩️', l:'Weather Change'  },
+  { id:'heat',          e:'🌡️', l:'Heat/Humidity'   },
+  { id:'alcohol',       e:'🍷', l:'Alcohol'          },
+  { id:'caffeine',      e:'☕', l:'Caffeine'         },
+  { id:'skipped_meal',  e:'🍽️', l:'Skipped Meal'   },
+  { id:'exercise',      e:'🏃', l:'Exercise'         },
+  { id:'strong_smell',  e:'👃', l:'Strong Smell'     },
+  { id:'hormonal',      e:'🌙', l:'Hormonal'         },
+  { id:'dehydration',   e:'💧', l:'Dehydration'      },
+  { id:'neck_tension',  e:'💆', l:'Neck Tension'     },
+];
+
+const MEDS = ['Ibuprofen','Acetaminophen','Aspirin','Excedrin','Naproxen','Sumatriptan','Rizatriptan','Nothing taken'];
+const DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+// ────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ────────────────────────────────────────────────────────────────────────────
+const pc = v => PAIN.find(p => p.v === v) || PAIN[0];
+const today = () => new Date().toISOString().split('T')[0];
+
+function fmtDate(ds) {
+  const d = new Date(ds + 'T12:00:00');
+  const t = today();
+  const y = new Date(); y.setDate(y.getDate()-1);
+  if (ds === t) return 'Today';
+  if (ds === y.toISOString().split('T')[0]) return 'Yesterday';
+  return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+
+function greeting() {
+  const h = new Date().getHours();
+  if (h < 12) return { line1:'Good', line2:'Morning', period:'am' };
+  if (h < 17) return { line1:'Good', line2:'Afternoon', period:'pm' };
+  return { line1:'Good', line2:'Evening', period:'pm' };
+}
+
+function wrand(w) {
+  let r = Math.random() * w.reduce((a,b)=>a+b,0);
+  for (let i=0;i<w.length;i++){r-=w[i];if(r<=0)return i+1;}
+  return w.length;
+}
+
+function sampleData() {
+  const ids = TRIGGERS.map(t=>t.id);
+  const entries = [];
+  for (let i=29;i>=0;i--) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().split('T')[0];
+    const am = wrand([.3,.25,.2,.15,.1]);
+    const sh = [...ids].sort(()=>Math.random()-.5);
+    entries.push({
+      id:`${ds}-am`, date:ds, time:'am', score:am,
+      triggers: am>=3 ? sh.slice(0,Math.floor(Math.random()*3)+1) : am>=2 ? sh.slice(0,1) : [],
+      medication: am>=4 ? MEDS[Math.floor(Math.random()*5)] : am>=3&&Math.random()>.5 ? MEDS[Math.floor(Math.random()*5)] : null,
+      notes:''
+    });
+    const pm = Math.max(1,Math.min(5,am+Math.round((Math.random()-.5)*2)));
+    entries.push({
+      id:`${ds}-pm`, date:ds, time:'pm', score:pm,
+      triggers: pm>=3 ? sh.slice(2,2+Math.floor(Math.random()*2)+1) : [],
+      medication: pm>=3&&Math.random()>.5 ? MEDS[Math.floor(Math.random()*5)] : null,
+      notes:''
+    });
+  }
+  return entries;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// WEATHER HOOK
+// ────────────────────────────────────────────────────────────────────────────
+function useWeather() {
+  const [wx, setWx]   = useState(null);
+  const [loading, setL] = useState(true);
+  const [err, setErr] = useState(null);
+
+  useEffect(()=>{
+    if (!navigator.geolocation) { setErr('no-geo'); setL(false); return; }
+    navigator.geolocation.getCurrentPosition(async pos=>{
+      try {
+        const {latitude:lat,longitude:lon} = pos.coords;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,precipitation_probability,wind_speed_10m&temperature_unit=fahrenheit&timezone=auto`;
+        const r = await fetch(url);
+        const j = await r.json();
+        const c = j.current;
+        const p = c.surface_pressure, h = c.relative_humidity_2m;
+        const risk = p < 1009 || h > 80 ? 'High' : p < 1013 || h > 65 ? 'Moderate' : 'Low';
+        setWx({ temp:Math.round(c.temperature_2m), humidity:h, pressure:Math.round(p), precip:c.precipitation_probability, wind:Math.round(c.wind_speed_10m), risk });
+      } catch(e){ setErr('fetch'); } finally { setL(false); }
+    }, ()=>{ setErr('denied'); setL(false); });
+  },[]);
+
+  return {wx,loading,err};
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// SVG LINE CHART  (30-day pain trend)
+// ────────────────────────────────────────────────────────────────────────────
+function LineSVG({data}) {
+  const W=340,H=140, pad={t:10,r:10,b:28,l:26};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+  const valid = data.filter(d=>d.avg!==null);
+  if (valid.length===0) return null;
+
+  const xp = (i)=> pad.l + i*(cW/(data.length-1));
+  const yp = (v)=> pad.t + cH - ((v-0)/(5-0))*cH;
+
+  const pts = data.map((d,i)=>d.avg!==null ? {x:xp(i),y:yp(d.avg),avg:d.avg,lbl:d.lbl} : null);
+  const vp  = pts.filter(Boolean);
+  const line= vp.map((p,i)=>`${i===0?'M':'L'}${p.x},${p.y}`).join(' ');
+  const area= vp.length>0 ? `M${vp[0].x},${pad.t+cH} ${vp.map(p=>`L${p.x},${p.y}`).join(' ')} L${vp[vp.length-1].x},${pad.t+cH}Z` : '';
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'100%'}}>
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.22"/>
+          <stop offset="100%" stopColor="#a78bfa" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      {[1,2,3,4,5].map(v=>(
+        <g key={v}>
+          <line x1={pad.l} y1={yp(v)} x2={W-pad.r} y2={yp(v)} stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+          <text x={pad.l-5} y={yp(v)+4} textAnchor="end" fontSize="9" fill="var(--text-muted)">{v}</text>
+        </g>
+      ))}
+      {area && <path d={area} fill="url(#lg)"/>}
+      {line && <path d={line} fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>}
+      {vp.map((p,i)=>(
+        <circle key={i} cx={p.x} cy={p.y} r="3" fill={pc(Math.round(p.avg)).color} stroke="var(--card)" strokeWidth="1.5"/>
+      ))}
+      {data.filter((_,i)=>i%5===0||i===data.length-1).map((d,i)=>(
+        <text key={i} x={xp(data.indexOf(d))} y={H-4} textAnchor="middle" fontSize="9" fill="var(--text-muted)">{d.lbl}</text>
+      ))}
+    </svg>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// SVG HORIZ BAR CHART (triggers)
+// ────────────────────────────────────────────────────────────────────────────
+function TrigBarSVG({data}) {
+  if (!data.length) return null;
+  const W=320, bH=20, gap=9, lblW=115;
+  const maxV=Math.max(...data.map(d=>d.count));
+  const barW=W-lblW-36;
+  const H=data.length*(bH+gap)+10;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'auto'}}>
+      {data.map((d,i)=>{
+        const y=i*(bH+gap)+5;
+        const w=maxV>0?(d.count/maxV)*barW:0;
+        return (
+          <g key={d.id}>
+            <text x="0" y={y+bH/2+4} fontSize="11" fill="var(--text-dim)">{d.e} {d.l}</text>
+            <rect x={lblW} y={y} width={w||1} height={bH} rx="4" fill="rgba(167,139,250,0.28)"/>
+            {w>3 && <rect x={lblW} y={y} width={3} height={bH} rx="4" fill="#a78bfa"/>}
+            <text x={lblW+w+6} y={y+bH/2+4} fontSize="11" fill="var(--text-dim)">{d.count}</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// WEATHER CARD
+// ────────────────────────────────────────────────────────────────────────────
+function WeatherCard({wx,loading,err}) {
+  if (loading) return (
+    <div className="card">
+      <div className="ct">Weather & Migraine Risk</div>
+      <div style={{color:'var(--text-muted)',fontSize:'13px'}}>Locating you…</div>
+    </div>
+  );
+  if (err || !wx) return (
+    <div className="card">
+      <div className="ct">Weather & Migraine Risk</div>
+      <div style={{color:'var(--text-muted)',fontSize:'13px'}}>
+        {err==='denied' ? '📍 Enable location to see weather risk' : 'Weather unavailable'}
+      </div>
+    </div>
+  );
+  const rc = wx.risk==='High'?'r-high':wx.risk==='Moderate'?'r-mod':'r-low';
+  const re = wx.risk==='High'?'⚠️':wx.risk==='Moderate'?'⚡':'✓';
+  return (
+    <div className="card">
+      <div className="ct">Weather & Migraine Risk</div>
+      <div className="wx-grid">
+        <div className="wx-stat"><div className="wx-lbl">Temperature</div><div className="wx-val">{wx.temp}<span className="wx-unit">°F</span></div></div>
+        <div className="wx-stat"><div className="wx-lbl">Humidity</div><div className="wx-val">{wx.humidity}<span className="wx-unit">%</span></div></div>
+        <div className="wx-stat"><div className="wx-lbl">Pressure</div><div className="wx-val">{wx.pressure}<span className="wx-unit">hPa</span></div></div>
+        <div className="wx-stat"><div className="wx-lbl">Rain Chance</div><div className="wx-val">{wx.precip}<span className="wx-unit">%</span></div></div>
+      </div>
+      <div className={`risk ${rc}`}><span>{re}</span><span>Migraine Risk: {wx.risk}</span></div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// TODAY SCREEN
+// ────────────────────────────────────────────────────────────────────────────
+function TodayScreen({entries, onLog, wx, wxLoad, wxErr}) {
+  const td = today();
+  const am = entries.find(e=>e.date===td&&e.time==='am');
+  const pm = entries.find(e=>e.date===td&&e.time==='pm');
+  const g  = greeting();
+
+  // 7-day mini trend
+  const trend = useMemo(()=>{
+    return Array.from({length:7},(_,i)=>{
+      const d = new Date(); d.setDate(d.getDate()-(6-i));
+      const ds = d.toISOString().split('T')[0];
+      const de = entries.filter(e=>e.date===ds);
+      const avg = de.length ? de.reduce((s,e)=>s+e.score,0)/de.length : null;
+      return {ds, avg, day:DAYS[d.getDay()]};
+    });
+  },[entries]);
+
+  const fullDate = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+  return (
+    <div className="fi">
+      <div className="ph">
+        <div className="greet">{g.line1}<br/><em>{g.line2}</em></div>
+        <div className="date-lbl">{fullDate}</div>
+      </div>
+
+      <WeatherCard wx={wx} loading={wxLoad} err={wxErr}/>
+
+      {/* Today's scores */}
+      <div className="card">
+        <div className="ct">Today's Score</div>
+        <div className="scores-row">
+          <div className="slot" onClick={()=>!am&&onLog('am')}>
+            <div className="slot-lbl">☀️ Morning</div>
+            {am
+              ? <div className="slot-val" style={{color:pc(am.score).color}}>{am.score}</div>
+              : <div className="slot-emp">Tap to log →</div>
+            }
+          </div>
+          <div className="slot" onClick={()=>!pm&&onLog('pm')}>
+            <div className="slot-lbl">🌙 Evening</div>
+            {pm
+              ? <div className="slot-val" style={{color:pc(pm.score).color}}>{pm.score}</div>
+              : <div className="slot-emp">Tap to log →</div>
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* 7-day trend */}
+      <div className="card">
+        <div className="ct">7-Day Trend</div>
+        <div className="mini-bars">
+          {trend.map((d,i)=>{
+            const h = d.avg ? `${(d.avg/5)*40+6}px` : '3px';
+            const col = d.avg ? pc(Math.round(d.avg)).color : 'var(--border)';
+            return <div key={i} className="mb" style={{height:h,background:col,opacity:d.avg?.8:.25}} title={d.avg?`${d.day}: ${d.avg.toFixed(1)}`:`${d.day}: no data`}/>;
+          })}
+        </div>
+        <div className="mini-days">{trend.map((d,i)=><span key={i}>{d.day}</span>)}</div>
+      </div>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// LOG FORM
+// ────────────────────────────────────────────────────────────────────────────
+function LogForm({initTime, onSave}) {
+  const [time, setTime] = useState(initTime||greeting().period);
+  const [score, setScore] = useState(null);
+  const [trigs, setTrigs] = useState([]);
+  const [med, setMed]   = useState(null);
+  const [notes, setNotes] = useState('');
+
+  const toggle = id => setTrigs(p=>p.includes(id)?p.filter(t=>t!==id):[...p,id]);
+
+  const save = () => {
+    if (!score) return;
+    onSave({ id:`${today()}-${time}`, date:today(), time, score, triggers:trigs, medication:med, notes });
+  };
+
+  return (
+    <div className="log-wrap fi">
+      <div className="log-hed">Log how you're <em style={{fontStyle:'italic',color:'var(--accent)'}}>feeling</em></div>
+
+      <div className="fg">
+        <label className="fl">Check-in time</label>
+        <div className="tt">
+          <button className={`tb ${time==='am'?'on':''}`} onClick={()=>setTime('am')}>☀️ Morning</button>
+          <button className={`tb ${time==='pm'?'on':''}`} onClick={()=>setTime('pm')}>🌙 Evening</button>
+        </div>
+      </div>
+
+      <div className="fg">
+        <label className="fl">Pain / discomfort  (1 = clear · 5 = severe)</label>
+        <div className="pp">
+          {PAIN.map(p=>(
+            <button key={p.v}
+              className={`pbtn ${score===p.v?'on':''}`}
+              style={{color:p.color, borderColor:score===p.v?p.color:'transparent', background:score===p.v?p.bg:'var(--card)'}}
+              onClick={()=>setScore(p.v)}>
+              <span className="pnum">{p.v}</span>
+              <span className="plbl">{p.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="fg">
+        <label className="fl">Triggers — select all that apply</label>
+        <div className="chips">
+          {TRIGGERS.map(t=>(
+            <button key={t.id} className={`chip ${trigs.includes(t.id)?'on':''}`} onClick={()=>toggle(t.id)}>
+              <span>{t.e}</span>{t.l}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="fg">
+        <label className="fl">Medication taken</label>
+        <div className="chips">
+          {MEDS.map(m=>(
+            <button key={m} className={`chip med ${med===m?'on':''}`} onClick={()=>setMed(p=>p===m?null:m)}>{m}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="fg">
+        <label className="fl">Notes (optional)</label>
+        <textarea className="notes" placeholder="Anything else worth noting…" value={notes} onChange={e=>setNotes(e.target.value)}/>
+      </div>
+
+      <button className="savebtn" onClick={save} disabled={!score}>Save Entry ✓</button>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// HISTORY SCREEN
+// ────────────────────────────────────────────────────────────────────────────
+function HistoryScreen({entries}) {
+  const grouped = useMemo(()=>{
+    const m = {};
+    entries.forEach(e=>{ if(!m[e.date])m[e.date]=[]; m[e.date].push(e); });
+    return Object.entries(m).sort(([a],[b])=>b.localeCompare(a)).slice(0,40);
+  },[entries]);
+
+  if (!grouped.length) return (
+    <div><div className="sec-head">History</div>
+      <div className="empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        <p>No entries yet — start by logging your first check-in!</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="fi">
+      <div className="sec-head">History</div>
+      <div style={{height:'8px'}}/>
+      {grouped.map(([date,de])=>(
+        <div key={date}>
+          <div className="sec-div">{fmtDate(date)}</div>
+          {de.sort((a,b)=>a.time.localeCompare(b.time)).map(e=>{
+            const p = pc(e.score);
+            const tl = e.triggers.map(id=>TRIGGERS.find(t=>t.id===id)).filter(Boolean);
+            return (
+              <div key={e.id} className="hi">
+                <div className="hdot" style={{background:p.bg,color:p.color}}>{e.score}</div>
+                <div className="hinfo">
+                  <div className="hdate">{e.time==='am'?'☀️ Morning':'🌙 Evening'}</div>
+                  {e.medication && <div className="hmeta">💊 {e.medication}</div>}
+                  {tl.length>0 && (
+                    <div className="htags">
+                      {tl.slice(0,3).map(t=><span key={t.id} className="htag">{t.e} {t.l}</span>)}
+                      {tl.length>3 && <span className="htag">+{tl.length-3}</span>}
+                    </div>
+                  )}
+                  {e.notes && <div className="hmeta" style={{marginTop:'5px',fontStyle:'italic'}}>"{e.notes}"</div>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// INSIGHTS SCREEN
+// ────────────────────────────────────────────────────────────────────────────
+function InsightsScreen({entries}) {
+  const trendData = useMemo(()=>Array.from({length:30},(_,i)=>{
+    const d=new Date(); d.setDate(d.getDate()-(29-i));
+    const ds=d.toISOString().split('T')[0];
+    const de=entries.filter(e=>e.date===ds);
+    const avg=de.length?de.reduce((s,e)=>s+e.score,0)/de.length:null;
+    return {ds,avg,lbl:d.getDate().toString()};
+  }),[entries]);
+
+  const trigFreq = useMemo(()=>{
+    const ct={};
+    entries.forEach(e=>e.triggers.forEach(t=>{ct[t]=(ct[t]||0)+1;}));
+    return TRIGGERS.map(t=>({...t,count:ct[t.id]||0})).filter(t=>t.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
+  },[entries]);
+
+  const stats = useMemo(()=>{
+    const all=entries.map(e=>e.score);
+    const avg=all.length?(all.reduce((a,b)=>a+b,0)/all.length).toFixed(1):'—';
+    const now=new Date();
+    const mStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const mDays=new Set(entries.filter(e=>e.score>=3&&e.date.startsWith(mStr)).map(e=>e.date)).size;
+    const top=trigFreq.length>0?trigFreq[0].e:'—';
+    return {avg,mDays,top};
+  },[entries,trigFreq]);
+
+  const amPm = useMemo(()=>{
+    const am=entries.filter(e=>e.time==='am');
+    const pm=entries.filter(e=>e.time==='pm');
+    const aA=am.length?am.reduce((s,e)=>s+e.score,0)/am.length:0;
+    const pA=pm.length?pm.reduce((s,e)=>s+e.score,0)/pm.length:0;
+    return {am:aA.toFixed(1),pm:pA.toFixed(1)};
+  },[entries]);
+
+  return (
+    <div className="fi">
+      <div className="sec-head">Insights</div>
+      <div className="sec-sub">Based on your last 30 days</div>
+
+      <div className="stat-row">
+        <div className="sc"><div className="sv" style={{color:'var(--accent)'}}>{stats.avg}</div><div className="sl">Avg Score</div></div>
+        <div className="sc"><div className="sv" style={{color:'#f97316'}}>{stats.mDays}</div><div className="sl">Migraine Days</div></div>
+        <div className="sc"><div className="sv" style={{fontSize:'30px'}}>{stats.top}</div><div className="sl">Top Trigger</div></div>
+      </div>
+
+      <div className="card">
+        <div className="ct">30-Day Pain Trend</div>
+        <div style={{height:'140px'}}><LineSVG data={trendData}/></div>
+      </div>
+
+      <div className="card">
+        <div className="ct">Morning vs Evening</div>
+        <div style={{marginBottom:'14px'}}>
+          <div style={{fontSize:'11px',color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'5px'}}>☀️ AM Average — {amPm.am}</div>
+          <div className="bar-track"><div className="bar-fill" style={{width:`${(amPm.am/5)*100}%`,background:'linear-gradient(90deg,#fbbf24,#f97316)'}}/></div>
+        </div>
+        <div>
+          <div style={{fontSize:'11px',color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'5px'}}>🌙 PM Average — {amPm.pm}</div>
+          <div className="bar-track"><div className="bar-fill" style={{width:`${(amPm.pm/5)*100}%`,background:'linear-gradient(90deg,#a78bfa,#7c3aed)'}}/></div>
+        </div>
+      </div>
+
+      {trigFreq.length>0 && (
+        <div className="card">
+          <div className="ct">Top Triggers</div>
+          <TrigBarSVG data={trigFreq}/>
+        </div>
+      )}
+
+      <div style={{height:'8px'}}/>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// APP
+// ────────────────────────────────────────────────────────────────────────────
+function App() {
+  const [screen, setScreen] = useState('today');
+  const [logTime, setLogTime] = useState(null);
+  const [toast, setToast]   = useState(null);
+  const [entries, setEntries] = useState(()=>{
+    try { const s=localStorage.getItem('hs_entries'); if(s)return JSON.parse(s); } catch(e){}
+    return sampleData();
+  });
+
+  const {wx, loading:wxL, err:wxE} = useWeather();
+
+  useEffect(()=>{ try{localStorage.setItem('hs_entries',JSON.stringify(entries));}catch(e){} },[entries]);
+
+  const openLog = useCallback((t)=>{ setLogTime(t||greeting().period); setScreen('log'); },[]);
+
+  const saveEntry = useCallback((entry)=>{
+    setEntries(p=>[...p.filter(e=>e.id!==entry.id),entry]);
+    setScreen('today');
+    setToast('✓  Entry saved!');
+    setTimeout(()=>setToast(null),2100);
+  },[]);
+
+  return (
+    <div className="app">
+      {toast && <div className="toast">{toast}</div>}
+      <div className="scroll">
+        {screen==='today'   && <TodayScreen entries={entries} onLog={openLog} wx={wx} wxLoad={wxL} wxErr={wxE}/>}
+        {screen==='log'     && <LogForm initTime={logTime} onSave={saveEntry}/>}
+        {screen==='history' && <HistoryScreen entries={entries}/>}
+        {screen==='insights'&& <InsightsScreen entries={entries}/>}
+      </div>
+
+      <nav className="nav">
+        {/* Today */}
+        <button className={`nb ${screen==='today'?'on':''}`} onClick={()=>setScreen('today')}>
+          <svg viewBox="0 0 24 24" fill={screen==='today'?'currentColor':'none'} stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          <span>Today</span>
+        </button>
+
+        {/* History */}
+        <button className={`nb ${screen==='history'?'on':''}`} onClick={()=>setScreen('history')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+          <span>History</span>
+        </button>
+
+        {/* FAB */}
+        <div className="fab-wrap">
+          <button className="fab" onClick={()=>openLog()}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+
+        {/* Insights */}
+        <button className={`nb ${screen==='insights'?'on':''}`} onClick={()=>setScreen('insights')}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>
+          <span>Insights</span>
+        </button>
+
+        {/* Log (text) */}
+        <button className={`nb ${screen==='log'?'on':''}`} onClick={()=>openLog()}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span>Log</span>
+        </button>
+      </nav>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
