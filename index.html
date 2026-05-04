@@ -25,6 +25,8 @@
       --accent-glow:  rgba(167,139,250,0.28);
       --teal:         #2dd4bf;
       --teal-dim:     rgba(45,212,191,0.12);
+      --orange:       #fb923c;
+      --orange-dim:   rgba(251,146,60,0.12);
 
       --text:         #e2e8f0;
       --text-dim:     #94a3b8;
@@ -50,10 +52,10 @@
 
     /* ── NAV ── */
     .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; height: var(--nav); background: rgba(17,24,39,0.95); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; z-index: 100; backdrop-filter: blur(20px); }
-    .nb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; cursor: pointer; padding: 8px; color: var(--text-muted); transition: color .2s; font-family: var(--font-b); }
+    .nb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: none; cursor: pointer; padding: 8px 4px; color: var(--text-muted); transition: color .2s; font-family: var(--font-b); }
     .nb.on { color: var(--accent); }
-    .nb svg { width: 21px; height: 21px; }
-    .nb span { font-size: 10px; font-weight: 500; letter-spacing: .04em; }
+    .nb svg { width: 20px; height: 20px; }
+    .nb span { font-size: 9px; font-weight: 500; letter-spacing: .04em; }
     .fab-wrap { flex: 1; display: flex; justify-content: center; }
     .fab { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #7c3aed); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px var(--accent-glow); transition: all .2s; transform: translateY(-8px); }
     .fab:hover { transform: translateY(-11px) scale(1.05); }
@@ -82,12 +84,12 @@
     .r-high { background: rgba(248,113,113,.12); color: #f87171; }
 
     /* ── TODAY SCORES ── */
-    .scores-row { display: flex; gap: 11px; }
-    .slot { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--rsm); padding: 13px; cursor: pointer; transition: border-color .2s; }
+    .scores-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .slot { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--rsm); padding: 11px 10px; cursor: pointer; transition: border-color .2s; }
     .slot:hover { border-color: var(--border-soft); }
-    .slot-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); margin-bottom: 5px; }
-    .slot-val { font-family: var(--font-d); font-size: 36px; font-weight: 400; line-height: 1; }
-    .slot-emp { font-size: 12px; color: var(--text-muted); }
+    .slot-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 5px; }
+    .slot-val { font-family: var(--font-d); font-size: 32px; font-weight: 400; line-height: 1; }
+    .slot-emp { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
     /* ── MINI TREND ── */
     .mini-bars { display: flex; align-items: flex-end; gap: 5px; height: 44px; }
@@ -95,42 +97,104 @@
     .mini-days { display: flex; gap: 5px; margin-top: 5px; }
     .mini-days span { flex: 1; text-align: center; font-size: 10px; color: var(--text-muted); }
 
-    /* ── LOG FORM ── */
-    .log-wrap { padding: 56px 22px 40px; }
-    .log-hed { font-family: var(--font-d); font-size: 34px; font-weight: 300; margin-bottom: 30px; }
-    .fg { margin-bottom: 26px; }
-    .fl { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 11px; }
+    /* ── WIZARD ── */
+    .wizard { min-height: 100%; display: flex; flex-direction: column; }
 
-    /* time toggle */
-    .tt { display: flex; background: var(--card); border-radius: var(--rsm); padding: 4px; border: 1px solid var(--border); }
-    .tb { flex: 1; padding: 9px; border: none; background: transparent; border-radius: 7px; font-family: var(--font-b); font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-dim); transition: all .2s; }
-    .tb.on { background: var(--accent-dim); color: var(--accent); }
+    /* Header */
+    .w-hdr { display: flex; align-items: center; justify-content: space-between; padding: 52px 22px 20px; }
+    .w-back { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-soft); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all .18s; flex-shrink: 0; }
+    .w-back:hover { background: var(--card); color: var(--text); }
+    .w-back[disabled] { opacity: 0; pointer-events: none; }
 
-    /* pain picker */
-    .pp { display: flex; gap: 9px; }
-    .pbtn { flex: 1; aspect-ratio: 1; border-radius: var(--rsm); border: 2px solid transparent; background: var(--card); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; transition: all .2s; font-family: var(--font-b); }
-    .pbtn:hover { transform: translateY(-2px); }
-    .pbtn.on { transform: translateY(-3px); }
-    .pnum { font-size: 22px; font-weight: 700; line-height: 1; }
-    .plbl { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; opacity: .7; }
+    /* Progress pill */
+    .w-prog { display: flex; align-items: center; gap: 5px; }
+    .w-dot { height: 6px; border-radius: 3px; background: var(--card-hover); transition: all .3s ease; }
+    .w-dot.past { background: var(--accent); width: 6px; }
+    .w-dot.cur  { background: var(--accent); width: 22px; }
+    .w-dot.future { width: 6px; }
 
-    /* chips */
+    /* Body */
+    .wbody { flex: 1; padding: 0 22px 40px; }
+    .w-ttl { font-family: var(--font-d); font-size: 38px; font-weight: 300; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 6px; }
+    .w-ttl em { font-style: italic; color: var(--accent); }
+    .w-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 30px; }
+
+    /* Step fade-in */
+    @keyframes wfi { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .wstep { animation: wfi .28s ease forwards; }
+
+    /* ── STEP 1: Time cards ── */
+    .time-card { width: 100%; display: flex; align-items: center; gap: 16px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 20px 18px; margin-bottom: 10px; cursor: pointer; transition: all .18s; font-family: var(--font-b); }
+    .time-card:hover { border-color: var(--accent); background: var(--card-hover); transform: translateX(4px); }
+    .time-card.on { border-color: var(--accent); background: var(--accent-dim); transform: translateX(4px); }
+    .tc-e   { font-size: 30px; line-height: 1; flex-shrink: 0; }
+    .tc-body { flex: 1; }
+    .tc-label { font-size: 18px; font-weight: 500; color: var(--text); line-height: 1.2; }
+    .tc-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .tc-arr   { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; transition: transform .18s; }
+    .time-card:hover .tc-arr { transform: translateX(3px); color: var(--accent); }
+
+    /* ── STEP 2: Severity ── */
+    .sev-btn { width: 100%; display: flex; align-items: center; gap: 16px; background: var(--card); border: 2px solid transparent; border-radius: var(--r); padding: 15px 18px; margin-bottom: 9px; cursor: pointer; transition: all .18s; font-family: var(--font-b); }
+    .sev-btn:hover { border-color: rgba(255,255,255,.08); transform: translateX(5px); }
+    .sev-btn.on { transform: translateX(7px); }
+    .sb-num { font-family: var(--font-d); font-size: 44px; font-weight: 400; line-height: 1; width: 50px; text-align: center; flex-shrink: 0; }
+    .sb-info { flex: 1; text-align: left; }
+    .sb-lbl  { font-size: 16px; font-weight: 500; color: var(--text); line-height: 1.3; }
+    .sb-desc { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .sb-pips { display: flex; gap: 5px; margin-top: 7px; }
+    .sb-pip  { width: 10px; height: 10px; border-radius: 50%; transition: background .18s; }
+
+    /* ── STEP 3: Details ── */
+    .w-sect { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin: 20px 0 10px; }
+    .w-sect:first-child { margin-top: 0; }
     .chips { display: flex; flex-wrap: wrap; gap: 7px; }
     .chip { padding: 6px 13px; border-radius: var(--rf); border: 1px solid var(--border-soft); background: transparent; font-family: var(--font-b); font-size: 12px; color: var(--text-dim); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
     .chip:hover { border-color: var(--accent); color: var(--text); }
     .chip.on { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
     .chip.med:hover { border-color: var(--teal); }
     .chip.med.on { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+    .chip.sym:hover { border-color: var(--teal); }
+    .chip.sym.on { background: rgba(45,212,191,0.15); border-color: var(--teal); color: var(--teal); }
+    .chip.wi:hover { border-color: var(--orange); }
+    .chip.wi.on { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+    .chip.other-btn { border-style: dashed; }
+    .chip.other-btn:hover { border-color: var(--accent); color: var(--accent); border-style: dashed; }
+
+    /* dosage */
+    .dosage-wrap { margin-top: 10px; }
+    .dosage-row { display: flex; align-items: center; gap: 9px; }
+    .dosage-lbl { font-size: 12px; color: var(--text-muted); white-space: nowrap; min-width: 64px; }
+    .dosage-inp { flex: 1; background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--rsm); padding: 7px 11px; color: var(--text); font-family: var(--font-b); font-size: 13px; outline: none; }
+    .dosage-inp:focus { border-color: var(--teal); }
+    .dosage-inp::placeholder { color: var(--text-muted); }
+
+    /* other input row */
+    .other-row { display: flex; gap: 7px; margin-top: 9px; }
+    .other-inp { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--rsm); padding: 7px 12px; color: var(--text); font-family: var(--font-b); font-size: 13px; outline: none; }
+    .other-inp:focus { border-color: var(--border-soft); }
+    .other-inp::placeholder { color: var(--text-muted); }
+    .other-add { padding: 7px 14px; border-radius: var(--rsm); background: var(--accent-dim); border: 1px solid var(--accent); color: var(--accent); font-family: var(--font-b); font-size: 13px; font-weight: 500; cursor: pointer; }
 
     /* notes */
-    .notes { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: var(--rsm); padding: 13px; color: var(--text); font-family: var(--font-b); font-size: 14px; resize: none; outline: none; min-height: 76px; transition: border-color .2s; }
+    .notes { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: var(--rsm); padding: 13px; color: var(--text); font-family: var(--font-b); font-size: 14px; resize: none; outline: none; min-height: 88px; transition: border-color .2s; }
     .notes:focus { border-color: var(--border-soft); }
     .notes::placeholder { color: var(--text-muted); }
 
-    /* save */
+    /* ── STEP 4: Review ── */
+    .review-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 24px; }
+    .rc-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .rc-row:last-child { border-bottom: none; }
+    .rc-key { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--text-muted); width: 72px; flex-shrink: 0; padding-top: 3px; }
+    .rc-val { flex: 1; font-size: 14px; color: var(--text); line-height: 1.5; }
+    .rc-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+    .rc-chip { font-size: 11px; padding: 2px 9px; border-radius: var(--rf); }
+
+    /* Buttons */
     .savebtn { width: 100%; padding: 15px; border-radius: var(--r); background: linear-gradient(135deg, var(--accent), #7c3aed); border: none; color: #fff; font-family: var(--font-b); font-size: 16px; font-weight: 600; cursor: pointer; transition: all .2s; box-shadow: 0 4px 20px var(--accent-glow); letter-spacing: .02em; }
-    .savebtn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 26px var(--accent-glow); }
-    .savebtn:disabled { opacity: .35; cursor: not-allowed; }
+    .savebtn:hover { transform: translateY(-1px); box-shadow: 0 6px 26px var(--accent-glow); }
+    .nextbtn { width: 100%; padding: 15px; border-radius: var(--r); background: transparent; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--font-b); font-size: 16px; font-weight: 600; cursor: pointer; transition: all .2s; letter-spacing: .02em; margin-top: 4px; }
+    .nextbtn:hover { background: var(--accent-dim); }
 
     /* ── HISTORY ── */
     .hi { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 18px; margin: 0 14px 9px; display: flex; align-items: flex-start; gap: 14px; }
@@ -140,6 +204,8 @@
     .hmeta { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
     .htags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
     .htag { font-size: 10px; padding: 2px 8px; background: var(--accent-dim); color: var(--accent); border-radius: var(--rf); }
+    .htag.sym { background: rgba(45,212,191,.1); color: var(--teal); }
+    .htag.wi  { background: var(--orange-dim); color: var(--orange); }
 
     /* ── INSIGHTS ── */
     .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; margin: 0 14px 11px; }
@@ -167,17 +233,17 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useCallback, useMemo } = React;
+const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
 // ────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
 // ────────────────────────────────────────────────────────────────────────────
 const PAIN = [
-  { v:1, color:'#34d399', bg:'rgba(52,211,153,.13)',  label:'Clear'  },
-  { v:2, color:'#86efac', bg:'rgba(134,239,172,.13)', label:'Mild'   },
-  { v:3, color:'#fbbf24', bg:'rgba(251,191,36,.13)',  label:'Mod.'   },
-  { v:4, color:'#f97316', bg:'rgba(249,115,22,.13)',  label:'Signif.'},
-  { v:5, color:'#f87171', bg:'rgba(248,113,113,.13)', label:'Severe' },
+  { v:1, color:'#34d399', bg:'rgba(52,211,153,.13)',  label:'Clear',       desc:'No pain at all'      },
+  { v:2, color:'#86efac', bg:'rgba(134,239,172,.13)', label:'Mild',        desc:'Noticeable, manageable' },
+  { v:3, color:'#fbbf24', bg:'rgba(251,191,36,.13)',  label:'Moderate',    desc:'Distracting, slowing me down' },
+  { v:4, color:'#f97316', bg:'rgba(249,115,22,.13)',  label:'Significant', desc:'Hard to function normally' },
+  { v:5, color:'#f87171', bg:'rgba(248,113,113,.13)', label:'Severe',      desc:'Debilitating'        },
 ];
 
 const TRIGGERS = [
@@ -185,30 +251,94 @@ const TRIGGERS = [
   { id:'screen_time',   e:'📱', l:'Screen Time'      },
   { id:'sunlight',      e:'☀️', l:'Sunlight'          },
   { id:'loud_sounds',   e:'🔊', l:'Loud Sounds'      },
+  { id:'noise',         e:'🔉', l:'Noise'            },
   { id:'driving',       e:'🚗', l:'Driving'          },
+  { id:'biking',        e:'🚴', l:'Biking'           },
   { id:'stress',        e:'😤', l:'Stress'           },
+  { id:'anxiety',       e:'😰', l:'Anxiety'          },
+  { id:'crying',        e:'😢', l:'Crying'           },
   { id:'poor_sleep',    e:'😴', l:'Poor Sleep'       },
-  { id:'oversleep',     e:'🛌', l:'Oversleeping'     },
+  { id:'lack_of_sleep', e:'🌛', l:'Lack of Sleep'   },
   { id:'weather',       e:'🌩️', l:'Weather Change'  },
   { id:'heat',          e:'🌡️', l:'Heat/Humidity'   },
   { id:'alcohol',       e:'🍷', l:'Alcohol'          },
   { id:'caffeine',      e:'☕', l:'Caffeine'         },
-  { id:'skipped_meal',  e:'🍽️', l:'Skipped Meal'   },
   { id:'exercise',      e:'🏃', l:'Exercise'         },
   { id:'strong_smell',  e:'👃', l:'Strong Smell'     },
-  { id:'hormonal',      e:'🌙', l:'Hormonal'         },
   { id:'dehydration',   e:'💧', l:'Dehydration'      },
   { id:'neck_tension',  e:'💆', l:'Neck Tension'     },
+  { id:'restaurant',    e:'🍽️', l:'Restaurant'      },
+  { id:'bowen',         e:'🤲', l:'Bowen'            },
 ];
 
-const MEDS = ['Ibuprofen','Acetaminophen','Aspirin','Excedrin','Naproxen','Sumatriptan','Rizatriptan','Nothing taken'];
+const MEDS = [
+  { id:'ibuprofen',     label:'Ibuprofen'     },
+  { id:'acetaminophen', label:'Acetaminophen' },
+  { id:'sumatriptan',   label:'Sumatriptan'   },
+  { id:'ubrelvy',       label:'Ubrelvy'       },
+  { id:'emgality',      label:'Emgality'      },
+  { id:'cefaly',        label:'Cefaly'        },
+  { id:'nothing',       label:'Nothing taken' },
+];
+
+const SYMPTOMS = [
+  { id:'allodynia',             l:'Allodynia'             },
+  { id:'appetite_change',       l:'Appetite Change'       },
+  { id:'aura',                  l:'Aura'                  },
+  { id:'weakness',              l:'Weakness'              },
+  { id:'visual',                l:'Visual'                },
+  { id:'confusion',             l:'Confusion'             },
+  { id:'cravings',              l:'Cravings'              },
+  { id:'dizziness',             l:'Dizziness'             },
+  { id:'emotional_instability', l:'Emotional Instability' },
+  { id:'feeling_faint',         l:'Feeling Faint'         },
+  { id:'nausea',                l:'Nausea'                },
+  { id:'light_sensitivity',     l:'Light Sensitivity'     },
+  { id:'prodrome',              l:'Prodrome'              },
+  { id:'sinus_symptoms',        l:'Sinus Symptoms'        },
+  { id:'sound_sensitivity',     l:'Sound Sensitivity'     },
+  { id:'tinnitus',              l:'Tinnitus'              },
+  { id:'vertigo',               l:'Vertigo'               },
+  { id:'unilateral_headache',   l:'Unilateral Headache'   },
+  { id:'bilateral_headache',    l:'Bilateral Headache'    },
+  { id:'avoidance_of_movement', l:'Avoidance of Movement' },
+];
+
+const WORK_IMPACT = [
+  { id:'no_impact',       label:'No Impact'        },
+  { id:'late_arrival',    label:'Late Arrival'     },
+  { id:'slowed_work',     label:'Slowed Work'      },
+  { id:'half_day',        label:'½ Half Day'       },
+  { id:'early_departure', label:'Early Departure'  },
+  { id:'full_day_missed', label:'Full Day Missed'  },
+];
+
+const TIME_SLOTS = [
+  { id:'am',    e:'☀️',  label:'Morning',   sub:'Before noon',      full:'Morning'   },
+  { id:'pm',    e:'🌆',  label:'Afternoon', sub:'Noon to evening',  full:'Afternoon' },
+  { id:'night', e:'🌙',  label:'Night',     sub:'Evening & later',  full:'Night'     },
+];
+
 const DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+const TIME_ORDER = { am:0, pm:1, night:2 };
+const TOTAL_STEPS = 4;
 
 // ────────────────────────────────────────────────────────────────────────────
 // HELPERS
 // ────────────────────────────────────────────────────────────────────────────
 const pc = v => PAIN.find(p => p.v === v) || PAIN[0];
 const today = () => new Date().toISOString().split('T')[0];
+
+const getTrigLabel = id => {
+  if (id && id.startsWith('custom:')) return { e:'✏️', l: id.slice(7) };
+  return TRIGGERS.find(t => t.id === id) || { e:'?', l: id };
+};
+
+const getMedDisplay = med => {
+  if (!med) return null;
+  if (typeof med === 'string') return med;
+  return med.label + (med.dosage ? ` (${med.dosage})` : '');
+};
 
 function fmtDate(ds) {
   const d = new Date(ds + 'T12:00:00');
@@ -223,7 +353,8 @@ function greeting() {
   const h = new Date().getHours();
   if (h < 12) return { line1:'Good', line2:'Morning', period:'am' };
   if (h < 17) return { line1:'Good', line2:'Afternoon', period:'pm' };
-  return { line1:'Good', line2:'Evening', period:'pm' };
+  if (h < 21) return { line1:'Good', line2:'Evening', period:'pm' };
+  return { line1:'Good', line2:'Night', period:'night' };
 }
 
 function wrand(w) {
@@ -234,24 +365,24 @@ function wrand(w) {
 
 function sampleData() {
   const ids = TRIGGERS.map(t=>t.id);
+  const medList = MEDS.filter(m=>m.id!=='nothing');
   const entries = [];
   for (let i=29;i>=0;i--) {
     const d = new Date(); d.setDate(d.getDate()-i);
     const ds = d.toISOString().split('T')[0];
-    const am = wrand([.3,.25,.2,.15,.1]);
     const sh = [...ids].sort(()=>Math.random()-.5);
-    entries.push({
-      id:`${ds}-am`, date:ds, time:'am', score:am,
-      triggers: am>=3 ? sh.slice(0,Math.floor(Math.random()*3)+1) : am>=2 ? sh.slice(0,1) : [],
-      medication: am>=4 ? MEDS[Math.floor(Math.random()*5)] : am>=3&&Math.random()>.5 ? MEDS[Math.floor(Math.random()*5)] : null,
-      notes:''
-    });
-    const pm = Math.max(1,Math.min(5,am+Math.round((Math.random()-.5)*2)));
-    entries.push({
-      id:`${ds}-pm`, date:ds, time:'pm', score:pm,
-      triggers: pm>=3 ? sh.slice(2,2+Math.floor(Math.random()*2)+1) : [],
-      medication: pm>=3&&Math.random()>.5 ? MEDS[Math.floor(Math.random()*5)] : null,
-      notes:''
+    ['am','pm'].forEach(slot => {
+      const score = wrand([.3,.25,.2,.15,.1]);
+      const randMed = medList[Math.floor(Math.random()*medList.length)];
+      const takeMed = (score>=4&&Math.random()>.3)||(score>=3&&Math.random()>.5);
+      entries.push({
+        id:`${ds}-${slot}`, date:ds, time:slot, score,
+        triggers: score>=3 ? sh.slice(0,Math.floor(Math.random()*3)+1) : score>=2 ? sh.slice(0,1) : [],
+        medication: takeMed ? { id:randMed.id, label:randMed.label, dosage:'' } : null,
+        symptoms: [],
+        workImpact: null,
+        notes:''
+      });
     });
   }
   return entries;
@@ -261,16 +392,15 @@ function sampleData() {
 // WEATHER HOOK
 // ────────────────────────────────────────────────────────────────────────────
 function useWeather() {
-  const [wx, setWx]   = useState(null);
+  const [wx, setWx]     = useState(null);
   const [loading, setL] = useState(true);
-  const [err, setErr] = useState(null);
-
+  const [err, setErr]   = useState(null);
   useEffect(()=>{
     if (!navigator.geolocation) { setErr('no-geo'); setL(false); return; }
     navigator.geolocation.getCurrentPosition(async pos=>{
       try {
         const {latitude:lat,longitude:lon} = pos.coords;
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,precipitation_probability,wind_speed_10m&temperature_unit=fahrenheit&timezone=auto`;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,precipitation_probability,wind_speed_10m&temperature_unit=celsius&timezone=auto`;
         const r = await fetch(url);
         const j = await r.json();
         const c = j.current;
@@ -280,76 +410,62 @@ function useWeather() {
       } catch(e){ setErr('fetch'); } finally { setL(false); }
     }, ()=>{ setErr('denied'); setL(false); });
   },[]);
-
   return {wx,loading,err};
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// SVG LINE CHART  (30-day pain trend)
+// CHARTS
 // ────────────────────────────────────────────────────────────────────────────
 function LineSVG({data}) {
   const W=340,H=140, pad={t:10,r:10,b:28,l:26};
   const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
   const valid = data.filter(d=>d.avg!==null);
   if (valid.length===0) return null;
-
   const xp = (i)=> pad.l + i*(cW/(data.length-1));
   const yp = (v)=> pad.t + cH - ((v-0)/(5-0))*cH;
-
-  const pts = data.map((d,i)=>d.avg!==null ? {x:xp(i),y:yp(d.avg),avg:d.avg,lbl:d.lbl} : null);
+  const pts = data.map((d,i)=>d.avg!==null ? {x:xp(i),y:yp(d.avg),avg:d.avg} : null);
   const vp  = pts.filter(Boolean);
   const line= vp.map((p,i)=>`${i===0?'M':'L'}${p.x},${p.y}`).join(' ');
   const area= vp.length>0 ? `M${vp[0].x},${pad.t+cH} ${vp.map(p=>`L${p.x},${p.y}`).join(' ')} L${vp[vp.length-1].x},${pad.t+cH}Z` : '';
-
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'100%'}}>
-      <defs>
-        <linearGradient id="lg" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.22"/>
-          <stop offset="100%" stopColor="#a78bfa" stopOpacity="0"/>
-        </linearGradient>
-      </defs>
-      {[1,2,3,4,5].map(v=>(
-        <g key={v}>
-          <line x1={pad.l} y1={yp(v)} x2={W-pad.r} y2={yp(v)} stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-          <text x={pad.l-5} y={yp(v)+4} textAnchor="end" fontSize="9" fill="var(--text-muted)">{v}</text>
-        </g>
-      ))}
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a78bfa" stopOpacity="0.22"/><stop offset="100%" stopColor="#a78bfa" stopOpacity="0"/></linearGradient></defs>
+      {[1,2,3,4,5].map(v=>(<g key={v}><line x1={pad.l} y1={yp(v)} x2={W-pad.r} y2={yp(v)} stroke="rgba(255,255,255,0.04)" strokeWidth="1"/><text x={pad.l-5} y={yp(v)+4} textAnchor="end" fontSize="9" fill="var(--text-muted)">{v}</text></g>))}
       {area && <path d={area} fill="url(#lg)"/>}
       {line && <path d={line} fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>}
-      {vp.map((p,i)=>(
-        <circle key={i} cx={p.x} cy={p.y} r="3" fill={pc(Math.round(p.avg)).color} stroke="var(--card)" strokeWidth="1.5"/>
-      ))}
-      {data.filter((_,i)=>i%5===0||i===data.length-1).map((d,i)=>(
-        <text key={i} x={xp(data.indexOf(d))} y={H-4} textAnchor="middle" fontSize="9" fill="var(--text-muted)">{d.lbl}</text>
-      ))}
+      {vp.map((p,i)=>(<circle key={i} cx={p.x} cy={p.y} r="3" fill={pc(Math.round(p.avg)).color} stroke="var(--card)" strokeWidth="1.5"/>))}
+      {data.filter((_,i)=>i%5===0||i===data.length-1).map((d,i)=>(<text key={i} x={xp(data.indexOf(d))} y={H-4} textAnchor="middle" fontSize="9" fill="var(--text-muted)">{d.lbl}</text>))}
     </svg>
   );
 }
 
-// ────────────────────────────────────────────────────────────────────────────
-// SVG HORIZ BAR CHART (triggers)
-// ────────────────────────────────────────────────────────────────────────────
+function TrigLoadSVG({data}) {
+  const W=340, H=72, pad={t:4,r:10,b:20,l:26};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+  const maxT = Math.max(...data.map(d=>d.trigCount), 1);
+  const bW   = (cW / data.length) - 2;
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'100%'}}>
+      {data.map((d,i)=>{
+        const x=pad.l+i*(cW/data.length), bH=maxT>0?(d.trigCount/maxT)*cH:0, y=pad.t+cH-bH;
+        return <rect key={i} x={x+1} y={y} width={Math.max(bW,1)} height={Math.max(bH,1)} rx="2" fill={d.trigCount>0?'rgba(45,212,191,0.38)':'rgba(255,255,255,0.03)'}/>;
+      })}
+      {data.filter((_,i)=>i%5===0||i===data.length-1).map((d,i)=>{
+        const idx=data.indexOf(d), x=pad.l+idx*(cW/data.length)+bW/2;
+        return <text key={i} x={x} y={H-3} textAnchor="middle" fontSize="9" fill="var(--text-muted)">{d.lbl}</text>;
+      })}
+    </svg>
+  );
+}
+
 function TrigBarSVG({data}) {
   if (!data.length) return null;
-  const W=320, bH=20, gap=9, lblW=115;
-  const maxV=Math.max(...data.map(d=>d.count));
-  const barW=W-lblW-36;
-  const H=data.length*(bH+gap)+10;
-
+  const W=320, bH=20, gap=9, lblW=120, maxV=Math.max(...data.map(d=>d.count)), barW=W-lblW-36, H=data.length*(bH+gap)+10;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',height:'auto'}}>
       {data.map((d,i)=>{
-        const y=i*(bH+gap)+5;
-        const w=maxV>0?(d.count/maxV)*barW:0;
-        return (
-          <g key={d.id}>
-            <text x="0" y={y+bH/2+4} fontSize="11" fill="var(--text-dim)">{d.e} {d.l}</text>
-            <rect x={lblW} y={y} width={w||1} height={bH} rx="4" fill="rgba(167,139,250,0.28)"/>
-            {w>3 && <rect x={lblW} y={y} width={3} height={bH} rx="4" fill="#a78bfa"/>}
-            <text x={lblW+w+6} y={y+bH/2+4} fontSize="11" fill="var(--text-dim)">{d.count}</text>
-          </g>
-        );
+        const y=i*(bH+gap)+5, w=maxV>0?(d.count/maxV)*barW:0, lbl=d.l||(d.id&&d.id.startsWith('custom:')?d.id.slice(7):d.id);
+        return (<g key={d.id||i}><text x="0" y={y+bH/2+4} fontSize="11" fill="var(--text-dim)">{d.e} {lbl}</text><rect x={lblW} y={y} width={w||1} height={bH} rx="4" fill="rgba(167,139,250,0.28)"/>{w>3&&<rect x={lblW} y={y} width={3} height={bH} rx="4" fill="#a78bfa"/>}<text x={lblW+w+6} y={y+bH/2+4} fontSize="11" fill="var(--text-dim)">{d.count}</text></g>);
       })}
     </svg>
   );
@@ -359,27 +475,14 @@ function TrigBarSVG({data}) {
 // WEATHER CARD
 // ────────────────────────────────────────────────────────────────────────────
 function WeatherCard({wx,loading,err}) {
-  if (loading) return (
-    <div className="card">
-      <div className="ct">Weather & Migraine Risk</div>
-      <div style={{color:'var(--text-muted)',fontSize:'13px'}}>Locating you…</div>
-    </div>
-  );
-  if (err || !wx) return (
-    <div className="card">
-      <div className="ct">Weather & Migraine Risk</div>
-      <div style={{color:'var(--text-muted)',fontSize:'13px'}}>
-        {err==='denied' ? '📍 Enable location to see weather risk' : 'Weather unavailable'}
-      </div>
-    </div>
-  );
-  const rc = wx.risk==='High'?'r-high':wx.risk==='Moderate'?'r-mod':'r-low';
-  const re = wx.risk==='High'?'⚠️':wx.risk==='Moderate'?'⚡':'✓';
+  if (loading) return <div className="card"><div className="ct">Weather & Migraine Risk</div><div style={{color:'var(--text-muted)',fontSize:'13px'}}>Locating you…</div></div>;
+  if (err||!wx) return <div className="card"><div className="ct">Weather & Migraine Risk</div><div style={{color:'var(--text-muted)',fontSize:'13px'}}>{err==='denied'?'📍 Enable location to see weather risk':'Weather unavailable'}</div></div>;
+  const rc=wx.risk==='High'?'r-high':wx.risk==='Moderate'?'r-mod':'r-low', re=wx.risk==='High'?'⚠️':wx.risk==='Moderate'?'⚡':'✓';
   return (
     <div className="card">
       <div className="ct">Weather & Migraine Risk</div>
       <div className="wx-grid">
-        <div className="wx-stat"><div className="wx-lbl">Temperature</div><div className="wx-val">{wx.temp}<span className="wx-unit">°F</span></div></div>
+        <div className="wx-stat"><div className="wx-lbl">Temperature</div><div className="wx-val">{wx.temp}<span className="wx-unit">°C</span></div></div>
         <div className="wx-stat"><div className="wx-lbl">Humidity</div><div className="wx-val">{wx.humidity}<span className="wx-unit">%</span></div></div>
         <div className="wx-stat"><div className="wx-lbl">Pressure</div><div className="wx-val">{wx.pressure}<span className="wx-unit">hPa</span></div></div>
         <div className="wx-stat"><div className="wx-lbl">Rain Chance</div><div className="wx-val">{wx.precip}<span className="wx-unit">%</span></div></div>
@@ -393,62 +496,41 @@ function WeatherCard({wx,loading,err}) {
 // TODAY SCREEN
 // ────────────────────────────────────────────────────────────────────────────
 function TodayScreen({entries, onLog, wx, wxLoad, wxErr}) {
-  const td = today();
-  const am = entries.find(e=>e.date===td&&e.time==='am');
-  const pm = entries.find(e=>e.date===td&&e.time==='pm');
-  const g  = greeting();
-
-  // 7-day mini trend
-  const trend = useMemo(()=>{
-    return Array.from({length:7},(_,i)=>{
-      const d = new Date(); d.setDate(d.getDate()-(6-i));
-      const ds = d.toISOString().split('T')[0];
-      const de = entries.filter(e=>e.date===ds);
-      const avg = de.length ? de.reduce((s,e)=>s+e.score,0)/de.length : null;
-      return {ds, avg, day:DAYS[d.getDay()]};
-    });
-  },[entries]);
-
-  const fullDate = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-
+  const td = today(), g = greeting();
+  const trend = useMemo(()=>Array.from({length:7},(_,i)=>{
+    const d=new Date(); d.setDate(d.getDate()-(6-i));
+    const ds=d.toISOString().split('T')[0];
+    const de=entries.filter(e=>e.date===ds);
+    return {ds,avg:de.length?de.reduce((s,e)=>s+e.score,0)/de.length:null,day:DAYS[d.getDay()]};
+  }),[entries]);
+  const fullDate=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   return (
     <div className="fi">
       <div className="ph">
         <div className="greet">{g.line1}<br/><em>{g.line2}</em></div>
         <div className="date-lbl">{fullDate}</div>
       </div>
-
       <WeatherCard wx={wx} loading={wxLoad} err={wxErr}/>
-
-      {/* Today's scores */}
       <div className="card">
         <div className="ct">Today's Score</div>
         <div className="scores-row">
-          <div className="slot" onClick={()=>!am&&onLog('am')}>
-            <div className="slot-lbl">☀️ Morning</div>
-            {am
-              ? <div className="slot-val" style={{color:pc(am.score).color}}>{am.score}</div>
-              : <div className="slot-emp">Tap to log →</div>
-            }
-          </div>
-          <div className="slot" onClick={()=>!pm&&onLog('pm')}>
-            <div className="slot-lbl">🌙 Evening</div>
-            {pm
-              ? <div className="slot-val" style={{color:pc(pm.score).color}}>{pm.score}</div>
-              : <div className="slot-emp">Tap to log →</div>
-            }
-          </div>
+          {TIME_SLOTS.map(t=>{
+            const entry=entries.find(e=>e.date===td&&e.time===t.id);
+            return (
+              <div key={t.id} className="slot" onClick={()=>!entry&&onLog(t.id)}>
+                <div className="slot-lbl">{t.e} {t.id.toUpperCase()}</div>
+                {entry ? <div className="slot-val" style={{color:pc(entry.score).color}}>{entry.score}</div> : <div className="slot-emp">Tap →</div>}
+              </div>
+            );
+          })}
         </div>
       </div>
-
-      {/* 7-day trend */}
       <div className="card">
         <div className="ct">7-Day Trend</div>
         <div className="mini-bars">
           {trend.map((d,i)=>{
-            const h = d.avg ? `${(d.avg/5)*40+6}px` : '3px';
-            const col = d.avg ? pc(Math.round(d.avg)).color : 'var(--border)';
-            return <div key={i} className="mb" style={{height:h,background:col,opacity:d.avg?.8:.25}} title={d.avg?`${d.day}: ${d.avg.toFixed(1)}`:`${d.day}: no data`}/>;
+            const h=d.avg?`${(d.avg/5)*40+6}px`:'3px', col=d.avg?pc(Math.round(d.avg)).color:'var(--border)';
+            return <div key={i} className="mb" style={{height:h,background:col,opacity:d.avg?.8:.25}}/>;
           })}
         </div>
         <div className="mini-days">{trend.map((d,i)=><span key={i}>{d.day}</span>)}</div>
@@ -458,75 +540,348 @@ function TodayScreen({entries, onLog, wx, wxLoad, wxErr}) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// LOG FORM
+// WIZARD HEADER
 // ────────────────────────────────────────────────────────────────────────────
-function LogForm({initTime, onSave}) {
-  const [time, setTime] = useState(initTime||greeting().period);
-  const [score, setScore] = useState(null);
-  const [trigs, setTrigs] = useState([]);
-  const [med, setMed]   = useState(null);
-  const [notes, setNotes] = useState('');
+function WizardHeader({step, onBack}) {
+  return (
+    <div className="w-hdr">
+      <button className="w-back" onClick={onBack} disabled={step===1}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <polyline points="15,18 9,12 15,6"/>
+        </svg>
+      </button>
+      <div className="w-prog">
+        {Array.from({length:TOTAL_STEPS},(_,i)=>(
+          <div key={i} className={`w-dot ${i<step-1?'past':i===step-1?'cur':'future'}`}/>
+        ))}
+      </div>
+      <div style={{width:'38px'}}/>
+    </div>
+  );
+}
 
-  const toggle = id => setTrigs(p=>p.includes(id)?p.filter(t=>t!==id):[...p,id]);
+// ────────────────────────────────────────────────────────────────────────────
+// STEP 1 — When?
+// ────────────────────────────────────────────────────────────────────────────
+function Step1Time({time, setTime, onNext}) {
+  const pick = id => { setTime(id); setTimeout(onNext, 180); };
+  return (
+    <div className="wstep">
+      <div className="w-ttl">When is<br/><em>it?</em></div>
+      <div className="w-sub">Pick the part of the day you're logging for.</div>
+      {TIME_SLOTS.map(t=>(
+        <button key={t.id} className={`time-card ${time===t.id?'on':''}`} onClick={()=>pick(t.id)}>
+          <span className="tc-e">{t.e}</span>
+          <div className="tc-body">
+            <div className="tc-label">{t.label}</div>
+            <div className="tc-sub">{t.sub}</div>
+          </div>
+          <svg className="tc-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9,18 15,12 9,6"/></svg>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// STEP 2 — How bad?
+// ────────────────────────────────────────────────────────────────────────────
+function Step2Severity({score, setScore, onNext}) {
+  const pick = v => { setScore(v); setTimeout(onNext, 200); };
+  return (
+    <div className="wstep">
+      <div className="w-ttl">How are<br/>you <em>feeling?</em></div>
+      <div className="w-sub">Rate your pain or discomfort right now.</div>
+      {PAIN.map(p=>(
+        <button key={p.v}
+          className={`sev-btn ${score===p.v?'on':''}`}
+          style={{borderColor:score===p.v?p.color:'transparent', background:score===p.v?p.bg:'var(--card)'}}
+          onClick={()=>pick(p.v)}>
+          <span className="sb-num" style={{color:p.color}}>{p.v}</span>
+          <div className="sb-info">
+            <div className="sb-lbl">{p.label}</div>
+            <div className="sb-desc">{p.desc}</div>
+            <div className="sb-pips">
+              {Array.from({length:5},(_,i)=>(
+                <span key={i} className="sb-pip" style={{background:i<p.v?p.color:'var(--card-hover)'}}/>
+              ))}
+            </div>
+          </div>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// STEP 3 — Details
+// ────────────────────────────────────────────────────────────────────────────
+function Step3Details({trigs, setTrigs, symptoms, setSymptoms, med, setMed, workImpact, setWorkImpact, notes, setNotes, onNext}) {
+  const [trigOther, setTrigOther]       = useState('');
+  const [showTrigInp, setShowTrigInp]   = useState(false);
+  const [medOtherLabel, setMedOtherLabel]   = useState('');
+  const [medOtherDosage, setMedOtherDosage] = useState('');
+  const [showMedOther, setShowMedOther] = useState(false);
+  const trigRef = useRef(null), medRef = useRef(null);
+
+  const toggleTrig = id => setTrigs(p=>p.includes(id)?p.filter(t=>t!==id):[...p,id]);
+  const toggleSym  = id => setSymptoms(p=>p.includes(id)?p.filter(s=>s!==id):[...p,id]);
+
+  const addCustomTrig = () => {
+    const v=trigOther.trim(); if(!v) return;
+    const cid=`custom:${v}`;
+    if(!trigs.includes(cid)) setTrigs(p=>[...p,cid]);
+    setTrigOther(''); setShowTrigInp(false);
+  };
+
+  const selectMed = m => {
+    setShowMedOther(false);
+    setMed(p=>p&&p.id===m.id?null:{id:m.id,label:m.label,dosage:''});
+  };
+
+  const addCustomMed = () => {
+    const v=medOtherLabel.trim(); if(!v) return;
+    setMed({id:'custom',label:v,dosage:medOtherDosage});
+    setShowMedOther(false); setMedOtherLabel(''); setMedOtherDosage('');
+  };
+
+  const updateDosage = val => setMed(p=>p?{...p,dosage:val}:p);
+
+  return (
+    <div className="wstep">
+      <div className="w-ttl">What's<br/><em>going on?</em></div>
+      <div className="w-sub">Add as much or as little detail as you'd like.</div>
+
+      {/* Triggers */}
+      <div className="w-sect">Triggers</div>
+      <div className="chips">
+        {TRIGGERS.map(t=>(
+          <button key={t.id} className={`chip ${trigs.includes(t.id)?'on':''}`} onClick={()=>toggleTrig(t.id)}>
+            <span>{t.e}</span>{t.l}
+          </button>
+        ))}
+        {trigs.filter(t=>t.startsWith('custom:')).map(t=>(
+          <button key={t} className="chip on" onClick={()=>toggleTrig(t)}>✏️ {t.slice(7)}</button>
+        ))}
+        <button className="chip other-btn" onClick={()=>{setShowTrigInp(s=>!s);setTimeout(()=>trigRef.current?.focus(),50);}}>+ Other</button>
+      </div>
+      {showTrigInp && (
+        <div className="other-row">
+          <input ref={trigRef} className="other-inp" placeholder="Custom trigger…" value={trigOther}
+            onChange={e=>setTrigOther(e.target.value)}
+            onKeyDown={e=>{if(e.key==='Enter')addCustomTrig();if(e.key==='Escape')setShowTrigInp(false);}}/>
+          <button className="other-add" onClick={addCustomTrig}>Add</button>
+        </div>
+      )}
+
+      {/* Symptoms */}
+      <div className="w-sect">Symptoms</div>
+      <div className="chips">
+        {SYMPTOMS.map(s=>(
+          <button key={s.id} className={`chip sym ${symptoms.includes(s.id)?'on':''}`} onClick={()=>toggleSym(s.id)}>{s.l}</button>
+        ))}
+      </div>
+
+      {/* Medication */}
+      <div className="w-sect">Medication</div>
+      <div className="chips">
+        {MEDS.map(m=>(
+          <button key={m.id} className={`chip med ${med&&med.id===m.id?'on':''}`} onClick={()=>selectMed(m)}>{m.label}</button>
+        ))}
+        <button className="chip med other-btn" onClick={()=>{setShowMedOther(s=>!s);setMed(null);setTimeout(()=>medRef.current?.focus(),50);}}>+ Other</button>
+      </div>
+      {med && med.id!=='nothing' && med.id!=='custom' && !showMedOther && (
+        <div className="dosage-wrap">
+          <div className="dosage-row">
+            <span className="dosage-lbl">Dosage:</span>
+            <input className="dosage-inp" placeholder="e.g. 200mg" value={med.dosage} onChange={e=>updateDosage(e.target.value)}/>
+          </div>
+        </div>
+      )}
+      {showMedOther && (
+        <div style={{marginTop:'9px',display:'flex',flexDirection:'column',gap:'7px'}}>
+          <div className="other-row" style={{marginTop:'0'}}>
+            <input ref={medRef} className="other-inp" placeholder="Medication name…" value={medOtherLabel} onChange={e=>setMedOtherLabel(e.target.value)}/>
+          </div>
+          <div className="other-row" style={{marginTop:'0'}}>
+            <input className="other-inp" placeholder="Dosage (optional)" value={medOtherDosage} onChange={e=>setMedOtherDosage(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')addCustomMed();}}/>
+            <button className="other-add" onClick={addCustomMed}>Add</button>
+          </div>
+        </div>
+      )}
+      {med && med.id==='custom' && !showMedOther && (
+        <div className="dosage-wrap">
+          <div className="dosage-row">
+            <span className="dosage-lbl">Dosage:</span>
+            <input className="dosage-inp" placeholder="e.g. 100mg" value={med.dosage} onChange={e=>updateDosage(e.target.value)}/>
+          </div>
+        </div>
+      )}
+
+      {/* Work Impact */}
+      <div className="w-sect">Work Impact</div>
+      <div className="chips">
+        {WORK_IMPACT.map(w=>(
+          <button key={w.id} className={`chip wi ${workImpact===w.id?'on':''}`} onClick={()=>setWorkImpact(p=>p===w.id?null:w.id)}>{w.label}</button>
+        ))}
+      </div>
+
+      {/* Notes */}
+      <div className="w-sect">Notes</div>
+      <textarea className="notes" placeholder="Anything else worth noting…" value={notes} onChange={e=>setNotes(e.target.value)}/>
+
+      <div style={{height:'18px'}}/>
+      <button className="nextbtn" onClick={onNext}>Review & Save →</button>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// STEP 4 — Review & Submit
+// ────────────────────────────────────────────────────────────────────────────
+function Step4Review({time, score, trigs, symptoms, med, workImpact, notes, onSave}) {
+  const pain = pc(score);
+  const timeSlot = TIME_SLOTS.find(t=>t.id===time)||TIME_SLOTS[0];
+  const trigLabels = (trigs||[]).map(id=>getTrigLabel(id));
+  const symLabels  = (symptoms||[]).map(id=>SYMPTOMS.find(s=>s.id===id)).filter(Boolean);
+  const wi = workImpact ? WORK_IMPACT.find(w=>w.id===workImpact) : null;
+  const medDisplay = getMedDisplay(med);
+
+  return (
+    <div className="wstep">
+      <div className="w-ttl">Does this<br/>look <em>right?</em></div>
+      <div className="w-sub">Review your entry before saving.</div>
+
+      <div className="review-card">
+        {/* Time */}
+        <div className="rc-row">
+          <div className="rc-key">When</div>
+          <div className="rc-val">{timeSlot.e} {timeSlot.label}</div>
+        </div>
+
+        {/* Severity */}
+        <div className="rc-row">
+          <div className="rc-key">Severity</div>
+          <div className="rc-val">
+            <span style={{color:pain.color,fontWeight:'600'}}>{score} — {pain.label}</span>
+            <div style={{display:'flex',gap:'4px',marginTop:'5px'}}>
+              {Array.from({length:5},(_,i)=>(
+                <span key={i} style={{width:'10px',height:'10px',borderRadius:'50%',background:i<score?pain.color:'var(--card-hover)',display:'inline-block'}}/>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Triggers */}
+        {trigLabels.length>0 && (
+          <div className="rc-row">
+            <div className="rc-key">Triggers</div>
+            <div className="rc-val">
+              <div className="rc-chips">
+                {trigLabels.map((t,i)=>(
+                  <span key={i} className="rc-chip" style={{background:'var(--accent-dim)',color:'var(--accent)'}}>{t.e} {t.l}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Symptoms */}
+        {symLabels.length>0 && (
+          <div className="rc-row">
+            <div className="rc-key">Symptoms</div>
+            <div className="rc-val">
+              <div className="rc-chips">
+                {symLabels.map(s=>(
+                  <span key={s.id} className="rc-chip" style={{background:'rgba(45,212,191,.12)',color:'var(--teal)'}}>{s.l}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Medication */}
+        {medDisplay && (
+          <div className="rc-row">
+            <div className="rc-key">Meds</div>
+            <div className="rc-val">💊 {medDisplay}</div>
+          </div>
+        )}
+
+        {/* Work impact */}
+        {wi && wi.id!=='no_impact' && (
+          <div className="rc-row">
+            <div className="rc-key">Work</div>
+            <div className="rc-val" style={{color:'var(--orange)'}}>💼 {wi.label}</div>
+          </div>
+        )}
+
+        {/* Notes */}
+        {notes && (
+          <div className="rc-row">
+            <div className="rc-key">Notes</div>
+            <div className="rc-val" style={{fontStyle:'italic',color:'var(--text-dim)'}}>{notes}</div>
+          </div>
+        )}
+
+        {/* Empty details state */}
+        {trigLabels.length===0 && symLabels.length===0 && !medDisplay && !wi && !notes && (
+          <div className="rc-row">
+            <div className="rc-key">Details</div>
+            <div className="rc-val" style={{color:'var(--text-muted)'}}>None logged</div>
+          </div>
+        )}
+      </div>
+
+      <button className="savebtn" onClick={onSave}>Save Entry ✓</button>
+    </div>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// LOG WIZARD
+// ────────────────────────────────────────────────────────────────────────────
+function LogWizard({initTime, onSave}) {
+  const [step, setStep]         = useState(1);
+  const [time, setTime]         = useState(initTime || greeting().period);
+  const [score, setScore]       = useState(null);
+  const [trigs, setTrigs]       = useState([]);
+  const [symptoms, setSymptoms] = useState([]);
+  const [med, setMed]           = useState(null);
+  const [workImpact, setWorkImpact] = useState(null);
+  const [notes, setNotes]       = useState('');
+
+  const goNext = () => setStep(s => Math.min(s+1, TOTAL_STEPS));
+  const goBack = () => setStep(s => Math.max(s-1, 1));
 
   const save = () => {
-    if (!score) return;
-    onSave({ id:`${today()}-${time}`, date:today(), time, score, triggers:trigs, medication:med, notes });
+    onSave({ id:`${today()}-${time}`, date:today(), time, score, triggers:trigs, medication:med, symptoms, workImpact, notes });
   };
 
   return (
-    <div className="log-wrap fi">
-      <div className="log-hed">Log how you're <em style={{fontStyle:'italic',color:'var(--accent)'}}>feeling</em></div>
-
-      <div className="fg">
-        <label className="fl">Check-in time</label>
-        <div className="tt">
-          <button className={`tb ${time==='am'?'on':''}`} onClick={()=>setTime('am')}>☀️ Morning</button>
-          <button className={`tb ${time==='pm'?'on':''}`} onClick={()=>setTime('pm')}>🌙 Evening</button>
-        </div>
+    <div className="wizard">
+      <WizardHeader step={step} onBack={goBack}/>
+      <div className="wbody">
+        {step===1 && <Step1Time time={time} setTime={setTime} onNext={goNext}/>}
+        {step===2 && <Step2Severity score={score} setScore={setScore} onNext={()=>{if(score||score===0)goNext();else goNext();}}/>}
+        {step===3 && (
+          <Step3Details
+            trigs={trigs} setTrigs={setTrigs}
+            symptoms={symptoms} setSymptoms={setSymptoms}
+            med={med} setMed={setMed}
+            workImpact={workImpact} setWorkImpact={setWorkImpact}
+            notes={notes} setNotes={setNotes}
+            onNext={goNext}
+          />
+        )}
+        {step===4 && (
+          <Step4Review
+            time={time} score={score} trigs={trigs} symptoms={symptoms}
+            med={med} workImpact={workImpact} notes={notes}
+            onSave={save}
+          />
+        )}
       </div>
-
-      <div className="fg">
-        <label className="fl">Pain / discomfort  (1 = clear · 5 = severe)</label>
-        <div className="pp">
-          {PAIN.map(p=>(
-            <button key={p.v}
-              className={`pbtn ${score===p.v?'on':''}`}
-              style={{color:p.color, borderColor:score===p.v?p.color:'transparent', background:score===p.v?p.bg:'var(--card)'}}
-              onClick={()=>setScore(p.v)}>
-              <span className="pnum">{p.v}</span>
-              <span className="plbl">{p.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fg">
-        <label className="fl">Triggers — select all that apply</label>
-        <div className="chips">
-          {TRIGGERS.map(t=>(
-            <button key={t.id} className={`chip ${trigs.includes(t.id)?'on':''}`} onClick={()=>toggle(t.id)}>
-              <span>{t.e}</span>{t.l}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fg">
-        <label className="fl">Medication taken</label>
-        <div className="chips">
-          {MEDS.map(m=>(
-            <button key={m} className={`chip med ${med===m?'on':''}`} onClick={()=>setMed(p=>p===m?null:m)}>{m}</button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fg">
-        <label className="fl">Notes (optional)</label>
-        <textarea className="notes" placeholder="Anything else worth noting…" value={notes} onChange={e=>setNotes(e.target.value)}/>
-      </div>
-
-      <button className="savebtn" onClick={save} disabled={!score}>Save Entry ✓</button>
     </div>
   );
 }
@@ -536,7 +891,7 @@ function LogForm({initTime, onSave}) {
 // ────────────────────────────────────────────────────────────────────────────
 function HistoryScreen({entries}) {
   const grouped = useMemo(()=>{
-    const m = {};
+    const m={};
     entries.forEach(e=>{ if(!m[e.date])m[e.date]=[]; m[e.date].push(e); });
     return Object.entries(m).sort(([a],[b])=>b.localeCompare(a)).slice(0,40);
   },[entries]);
@@ -550,6 +905,8 @@ function HistoryScreen({entries}) {
     </div>
   );
 
+  const timeLabel = t => { const s=TIME_SLOTS.find(sl=>sl.id===t); return s?`${s.e} ${s.full}`:t; };
+
   return (
     <div className="fi">
       <div className="sec-head">History</div>
@@ -557,22 +914,21 @@ function HistoryScreen({entries}) {
       {grouped.map(([date,de])=>(
         <div key={date}>
           <div className="sec-div">{fmtDate(date)}</div>
-          {de.sort((a,b)=>a.time.localeCompare(b.time)).map(e=>{
-            const p = pc(e.score);
-            const tl = e.triggers.map(id=>TRIGGERS.find(t=>t.id===id)).filter(Boolean);
+          {de.sort((a,b)=>(TIME_ORDER[a.time]??99)-(TIME_ORDER[b.time]??99)).map(e=>{
+            const p=pc(e.score);
+            const tl=(e.triggers||[]).map(id=>getTrigLabel(id)).filter(Boolean);
+            const syms=(e.symptoms||[]).map(id=>SYMPTOMS.find(s=>s.id===id)).filter(Boolean);
+            const wi=e.workImpact?WORK_IMPACT.find(w=>w.id===e.workImpact):null;
             return (
               <div key={e.id} className="hi">
                 <div className="hdot" style={{background:p.bg,color:p.color}}>{e.score}</div>
                 <div className="hinfo">
-                  <div className="hdate">{e.time==='am'?'☀️ Morning':'🌙 Evening'}</div>
-                  {e.medication && <div className="hmeta">💊 {e.medication}</div>}
-                  {tl.length>0 && (
-                    <div className="htags">
-                      {tl.slice(0,3).map(t=><span key={t.id} className="htag">{t.e} {t.l}</span>)}
-                      {tl.length>3 && <span className="htag">+{tl.length-3}</span>}
-                    </div>
-                  )}
-                  {e.notes && <div className="hmeta" style={{marginTop:'5px',fontStyle:'italic'}}>"{e.notes}"</div>}
+                  <div className="hdate">{timeLabel(e.time)}</div>
+                  {getMedDisplay(e.medication)&&<div className="hmeta">💊 {getMedDisplay(e.medication)}</div>}
+                  {wi&&wi.id!=='no_impact'&&<div className="hmeta">💼 {wi.label}</div>}
+                  {tl.length>0&&(<div className="htags">{tl.slice(0,3).map((t,i)=><span key={i} className="htag">{t.e} {t.l}</span>)}{tl.length>3&&<span className="htag">+{tl.length-3}</span>}</div>)}
+                  {syms.length>0&&(<div className="htags">{syms.slice(0,3).map(s=><span key={s.id} className="htag sym">{s.l}</span>)}{syms.length>3&&<span className="htag sym">+{syms.length-3}</span>}</div>)}
+                  {e.notes&&<div className="hmeta" style={{marginTop:'5px',fontStyle:'italic'}}>"{e.notes}"</div>}
                 </div>
               </div>
             );
@@ -592,68 +948,95 @@ function InsightsScreen({entries}) {
     const ds=d.toISOString().split('T')[0];
     const de=entries.filter(e=>e.date===ds);
     const avg=de.length?de.reduce((s,e)=>s+e.score,0)/de.length:null;
-    return {ds,avg,lbl:d.getDate().toString()};
+    const trigCount=de.reduce((s,e)=>s+(e.triggers||[]).length,0);
+    return {ds,avg,lbl:d.getDate().toString(),trigCount};
   }),[entries]);
 
   const trigFreq = useMemo(()=>{
     const ct={};
-    entries.forEach(e=>e.triggers.forEach(t=>{ct[t]=(ct[t]||0)+1;}));
-    return TRIGGERS.map(t=>({...t,count:ct[t.id]||0})).filter(t=>t.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
+    entries.forEach(e=>(e.triggers||[]).forEach(t=>{ct[t]=(ct[t]||0)+1;}));
+    const result=[];
+    TRIGGERS.forEach(t=>{if(ct[t.id])result.push({...t,count:ct[t.id]});});
+    Object.entries(ct).forEach(([k,v])=>{if(k.startsWith('custom:'))result.push({id:k,e:'✏️',l:k.slice(7),count:v});});
+    return result.filter(t=>t.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
   },[entries]);
 
   const stats = useMemo(()=>{
     const all=entries.map(e=>e.score);
     const avg=all.length?(all.reduce((a,b)=>a+b,0)/all.length).toFixed(1):'—';
-    const now=new Date();
-    const mStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const now=new Date(), mStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     const mDays=new Set(entries.filter(e=>e.score>=3&&e.date.startsWith(mStr)).map(e=>e.date)).size;
-    const top=trigFreq.length>0?trigFreq[0].e:'—';
-    return {avg,mDays,top};
+    return {avg,mDays,top:trigFreq.length>0?trigFreq[0].e:'—'};
   },[entries,trigFreq]);
 
-  const amPm = useMemo(()=>{
-    const am=entries.filter(e=>e.time==='am');
-    const pm=entries.filter(e=>e.time==='pm');
-    const aA=am.length?am.reduce((s,e)=>s+e.score,0)/am.length:0;
-    const pA=pm.length?pm.reduce((s,e)=>s+e.score,0)/pm.length:0;
-    return {am:aA.toFixed(1),pm:pA.toFixed(1)};
+  const timeAvg = useMemo(()=>{
+    const calc=t=>{const es=entries.filter(e=>e.time===t);return es.length?(es.reduce((s,e)=>s+e.score,0)/es.length).toFixed(1):'0.0';};
+    return {am:calc('am'),pm:calc('pm'),night:calc('night')};
+  },[entries]);
+
+  const workStats = useMemo(()=>{
+    const now=new Date(), mStr=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const mEntries=entries.filter(e=>e.date.startsWith(mStr)&&e.workImpact);
+    const counts={}; WORK_IMPACT.forEach(w=>{counts[w.id]=0;});
+    mEntries.forEach(e=>{if(counts[e.workImpact]!==undefined)counts[e.workImpact]++;});
+    const affected=new Set(mEntries.filter(e=>e.workImpact&&e.workImpact!=='no_impact').map(e=>e.date)).size;
+    return {counts,totalAffected:affected,maxCount:Math.max(...WORK_IMPACT.filter(w=>w.id!=='no_impact').map(w=>counts[w.id]),1)};
   },[entries]);
 
   return (
     <div className="fi">
       <div className="sec-head">Insights</div>
       <div className="sec-sub">Based on your last 30 days</div>
-
       <div className="stat-row">
         <div className="sc"><div className="sv" style={{color:'var(--accent)'}}>{stats.avg}</div><div className="sl">Avg Score</div></div>
         <div className="sc"><div className="sv" style={{color:'#f97316'}}>{stats.mDays}</div><div className="sl">Migraine Days</div></div>
         <div className="sc"><div className="sv" style={{fontSize:'30px'}}>{stats.top}</div><div className="sl">Top Trigger</div></div>
       </div>
-
       <div className="card">
         <div className="ct">30-Day Pain Trend</div>
         <div style={{height:'140px'}}><LineSVG data={trendData}/></div>
+        <div style={{marginTop:'18px',paddingTop:'14px',borderTop:'1px solid var(--border)'}}>
+          <div className="ct" style={{color:'var(--teal)',marginBottom:'8px'}}>Trigger Load</div>
+          <div style={{height:'72px'}}><TrigLoadSVG data={trendData}/></div>
+        </div>
       </div>
-
       <div className="card">
-        <div className="ct">Morning vs Evening</div>
-        <div style={{marginBottom:'14px'}}>
-          <div style={{fontSize:'11px',color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'5px'}}>☀️ AM Average — {amPm.am}</div>
-          <div className="bar-track"><div className="bar-fill" style={{width:`${(amPm.am/5)*100}%`,background:'linear-gradient(90deg,#fbbf24,#f97316)'}}/></div>
-        </div>
-        <div>
-          <div style={{fontSize:'11px',color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'5px'}}>🌙 PM Average — {amPm.pm}</div>
-          <div className="bar-track"><div className="bar-fill" style={{width:`${(amPm.pm/5)*100}%`,background:'linear-gradient(90deg,#a78bfa,#7c3aed)'}}/></div>
-        </div>
+        <div className="ct">AM · PM · Night</div>
+        {[
+          {label:'☀️ AM',    val:timeAvg.am,    grad:'linear-gradient(90deg,#fbbf24,#f97316)'},
+          {label:'🌆 PM',    val:timeAvg.pm,    grad:'linear-gradient(90deg,#a78bfa,#7c3aed)'},
+          {label:'🌙 Night', val:timeAvg.night, grad:'linear-gradient(90deg,#60a5fa,#3b82f6)'},
+        ].map((r,i)=>(
+          <div key={i} style={{marginBottom:i<2?'14px':'0'}}>
+            <div style={{fontSize:'11px',color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'5px'}}>{r.label} Average — {r.val}</div>
+            <div className="bar-track"><div className="bar-fill" style={{width:`${(parseFloat(r.val)/5)*100}%`,background:r.grad}}/></div>
+          </div>
+        ))}
       </div>
-
-      {trigFreq.length>0 && (
-        <div className="card">
-          <div className="ct">Top Triggers</div>
-          <TrigBarSVG data={trigFreq}/>
-        </div>
+      {trigFreq.length>0&&(
+        <div className="card"><div className="ct">Top Triggers</div><TrigBarSVG data={trigFreq}/></div>
       )}
-
+      <div className="card">
+        <div className="ct">Work Impact This Month</div>
+        {workStats.totalAffected===0
+          ? <div style={{fontSize:'13px',color:'var(--text-muted)'}}>No work impact logged this month 🎉</div>
+          : (<>
+              <div style={{fontSize:'13px',color:'var(--text-dim)',marginBottom:'16px'}}>
+                <span style={{color:'var(--orange)',fontWeight:'600',fontSize:'22px',fontFamily:'var(--font-d)'}}>{workStats.totalAffected}</span>
+                <span style={{marginLeft:'6px'}}>days affected this month</span>
+              </div>
+              {WORK_IMPACT.filter(w=>w.id!=='no_impact').map(w=>(
+                <div key={w.id} style={{marginBottom:'10px'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:'11px',color:'var(--text-muted)',textTransform:'uppercase',letterSpacing:'.06em',marginBottom:'4px'}}>
+                    <span>{w.label}</span>
+                    <span style={{color:workStats.counts[w.id]>0?'var(--orange)':'var(--text-muted)'}}>{workStats.counts[w.id]} {workStats.counts[w.id]===1?'day':'days'}</span>
+                  </div>
+                  <div className="bar-track"><div className="bar-fill" style={{width:`${workStats.maxCount>0?(workStats.counts[w.id]/workStats.maxCount)*100:0}%`,background:'linear-gradient(90deg,#fb923c,#f97316)'}}/></div>
+                </div>
+              ))}
+            </>)
+        }
+      </div>
       <div style={{height:'8px'}}/>
     </div>
   );
@@ -663,16 +1046,14 @@ function InsightsScreen({entries}) {
 // APP
 // ────────────────────────────────────────────────────────────────────────────
 function App() {
-  const [screen, setScreen] = useState('today');
+  const [screen, setScreen]   = useState('today');
   const [logTime, setLogTime] = useState(null);
-  const [toast, setToast]   = useState(null);
+  const [toast, setToast]     = useState(null);
   const [entries, setEntries] = useState(()=>{
     try { const s=localStorage.getItem('hs_entries'); if(s)return JSON.parse(s); } catch(e){}
     return sampleData();
   });
-
   const {wx, loading:wxL, err:wxE} = useWeather();
-
   useEffect(()=>{ try{localStorage.setItem('hs_entries',JSON.stringify(entries));}catch(e){} },[entries]);
 
   const openLog = useCallback((t)=>{ setLogTime(t||greeting().period); setScreen('log'); },[]);
@@ -688,39 +1069,29 @@ function App() {
     <div className="app">
       {toast && <div className="toast">{toast}</div>}
       <div className="scroll">
-        {screen==='today'   && <TodayScreen entries={entries} onLog={openLog} wx={wx} wxLoad={wxL} wxErr={wxE}/>}
-        {screen==='log'     && <LogForm initTime={logTime} onSave={saveEntry}/>}
-        {screen==='history' && <HistoryScreen entries={entries}/>}
-        {screen==='insights'&& <InsightsScreen entries={entries}/>}
+        {screen==='today'    && <TodayScreen entries={entries} onLog={openLog} wx={wx} wxLoad={wxL} wxErr={wxE}/>}
+        {screen==='log'      && <LogWizard initTime={logTime} onSave={saveEntry}/>}
+        {screen==='history'  && <HistoryScreen entries={entries}/>}
+        {screen==='insights' && <InsightsScreen entries={entries}/>}
       </div>
-
       <nav className="nav">
-        {/* Today */}
         <button className={`nb ${screen==='today'?'on':''}`} onClick={()=>setScreen('today')}>
           <svg viewBox="0 0 24 24" fill={screen==='today'?'currentColor':'none'} stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
           <span>Today</span>
         </button>
-
-        {/* History */}
         <button className={`nb ${screen==='history'?'on':''}`} onClick={()=>setScreen('history')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
           <span>History</span>
         </button>
-
-        {/* FAB */}
         <div className="fab-wrap">
           <button className="fab" onClick={()=>openLog()}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         </div>
-
-        {/* Insights */}
         <button className={`nb ${screen==='insights'?'on':''}`} onClick={()=>setScreen('insights')}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="18" y="3" width="4" height="18"/><rect x="10" y="8" width="4" height="13"/><rect x="2" y="13" width="4" height="8"/></svg>
           <span>Insights</span>
         </button>
-
-        {/* Log (text) */}
         <button className={`nb ${screen==='log'?'on':''}`} onClick={()=>openLog()}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           <span>Log</span>
